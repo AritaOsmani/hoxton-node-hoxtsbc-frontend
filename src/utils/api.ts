@@ -31,7 +31,7 @@ export const handleLogout = async () => {
 };
 
 export const handleSignUp = async (body: RequestBody) => {
-  await sendRequest('signup', 'POST', body);
+  await sendRequest('sign-up', 'POST', body);
   window.location.href = '/';
 }
 
@@ -42,20 +42,12 @@ export const handleLogin = async (body: RequestBody) => {
   // FINISH-ME: set token in local storage
   localStorage.setItem('token', token)
 
-  return { data, error }
+  console.log('result: ', result)
+  return { data: result.user, error }
 }
 
-export const signInWithJWT = async () => {
+export const signInWithJWT = async (token: string) => {
+  const result = await sendRequest('banking-info', 'POST', undefined, token);
 
-  let token; // FINISH-ME: check for token
-  // Note: if token is not found, it can be 'undefined'(string)
-
-  if (localStorage.token) {
-    const result = await sendRequest('banking-info', 'POST', undefined, token);
-
-    return result || null;
-  } else {
-    return 'undefined'
-  }
-
+  return result;
 }

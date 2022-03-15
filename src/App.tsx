@@ -11,13 +11,22 @@ const App = function () {
   const [shouldShowRegisterModal, setShouldShowRegisterModal] = React.useState<boolean>(false)
   const [error, setError] = React.useState(null)
 
-  React.useEffect(() => {
-    api.signInWithJWT()
-      .then(resp => {
-        if (!resp) return;
+  // React.useEffect(() => {
+  //   api.signInWithJWT()
+  //     .then(resp => {
+  //       if (!resp) return;
 
+  //       resp.data && setUserData(resp.data)
+  //     })
+  // }, [])
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token || token === "undefined") return;
+
+    api.signInWithJWT(token)
+      .then(resp =>
         resp.data && setUserData(resp.data)
-      })
+      )
   }, [])
 
   const handleLogin = React.useCallback((email, password) => {
